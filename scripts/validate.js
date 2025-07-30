@@ -86,7 +86,7 @@ async function validate() {
             ['pnpm-workspace.yaml', 'pnpm workspace config'],
             ['turbo.json', 'Turborepo config'],
             ['tsconfig.base.json', 'Base TypeScript config'],
-            ['.eslintrc.js', 'ESLint config'],
+            ['eslint.config.js', 'ESLint config'],
             ['.prettierrc', 'Prettier config'],
             ['.editorconfig', 'Editor config'],
             ['.gitignore', 'Git ignore'],

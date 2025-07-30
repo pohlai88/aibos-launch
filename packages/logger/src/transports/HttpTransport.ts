@@ -13,7 +13,9 @@ export class HttpTransport implements TransportStrategy {
         endpoint?: string
     ) {
         this.enabledLevels = new Set(enabledLevels);
-        this.endpoint = endpoint;
+        if (endpoint) {
+            this.endpoint = endpoint;
+        }
     }
 
     log(level: LogLevel, message: string, context?: Record<string, unknown>): void {
@@ -29,9 +31,12 @@ export class HttpTransport implements TransportStrategy {
             level,
             message,
             transport: 'http',
-            ...(this.endpoint && { endpoint: this.endpoint }),
             ...context
         };
+
+        if (this.endpoint) {
+            logEntry['endpoint'] = this.endpoint;
+        }
 
         console.log(JSON.stringify(logEntry));
     }

@@ -9,7 +9,7 @@ export interface ApiRequest {
     query?: Record<string, string>;
 }
 
-export interface ApiResponse<T = unknown> {
+export interface ApiResponseData<T = unknown> {
     success: boolean;
     data?: T;
     error?: string;
@@ -39,6 +39,6 @@ export interface ApiEndpoint {
 
 export interface ApiRoute {
     endpoint: ApiEndpoint;
-    handler: (req: ApiRequest) => Promise<ApiResponse>;
+    handler: (req: ApiRequest) => Promise<ApiResponseData>;
     middleware?: Array<(req: ApiRequest) => Promise<ApiRequest>>;
 }
