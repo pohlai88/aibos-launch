@@ -1,0 +1,45 @@
+{
+    "schemaVersion": "1.0.0",
+    "manifest": {
+        "version": "1.0.0",
+        "name": "AI-BOS",
+        "description": "AI-BOS SaaS Platform - Manifest-Driven, Lean Architecture",
+        "features": [
+            {
+                "id": "foundation",
+                "name": "Foundation Setup",
+                "version": "1.0.0",
+                "enabled": true,
+                "permissions": [
+                    "read",
+                    "write"
+                ]
+            }
+        ],
+        "permissions": [
+            {
+                "id": "read",
+                "name": "Read Access",
+                "description": "Basic read access to application resources"
+            },
+            {
+                "id": "write",
+                "name": "Write Access",
+                "description": "Basic write access to application resources"
+            }
+        ],
+        "config": {
+            "environment": "development",
+            "logging": {
+                "level": "info",
+                "format": "json"
+            },
+            "security": {
+                "enabled": false
+            }
+        }
+    },
+    "migrations": {
+        "1.0.0": "initial"
+    }
+}

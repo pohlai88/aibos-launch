@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-json",
+    "ms-vscode.vscode-eslint",
+    "ms-vscode.vscode-git",
+    "ms-vscode.vscode-git-graph",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-npm-script",
+    "ms-vscode.vscode-js-debug",
+    "ms-vscode.vscode-js-debug-companion",
+    "ms-vscode.vscode-test-explorer",
+    "hbenl.vscode-test-explorer",
+    "ms-vscode.test-adapter-converter",
+    "ms-vscode.vscode-js-profile-flame",
+    "ms-vscode.vscode-js-profile-table"
+  ]
+}

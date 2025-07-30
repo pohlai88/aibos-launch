@@ -1,7 +1,0 @@
-[auth]
-token=__SENTRY_AUTH_TOKEN__
-
-[defaults]
-org=aibos
-project=saas-platform
-url=https://sentry.io/

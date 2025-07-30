@@ -1,0 +1,29 @@
+{
+    "name": "@ai-bos/backend",
+    "version": "0.1.0-foundation",
+    "description": "AI-BOS Backend Application",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint . --ext .ts,.tsx",
+        "type-check": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf .next"
+    },
+    "dependencies": {
+        "next": "^14.0.0",
+        "@ai-bos/types": "workspace:*",
+        "@ai-bos/logger": "workspace:*",
+        "@ai-bos/shared-infrastructure": "workspace:*",
+        "@ai-bos/backend-core": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^24.1.0",
+        "typescript": "^5.8.3",
+        "eslint": "^9.32.0",
+        "eslint-config-next": "^14.0.0",
+        "vitest": "^3.2.4"
+    }
+}

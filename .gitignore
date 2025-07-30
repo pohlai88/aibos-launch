@@ -1,120 +1,116 @@
-# ====================== #
-#  AI-BOS Enterprise     #
-#  World-Class .gitignore#
-# ====================== #
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-############## SECURITY ##############
-# Secrets (matches GitHub, Google, Vercel, Stripe, etc.)
-*.key
-*.pem
-*.cert
-*.crt
-*.pub
-*.gpg
-*.pass
-*.secret
-*.env
-.env.*
-# Allow .env.example files for development
-!.env.example
-!.env.example.*
-.vault
-.kubeconfig
-*.p12
-*.pfx
-*.asc
-
-############## BUILD ARTIFACTS ##############
-.next/
-out/
+# Production builds
 dist/
 build/
-.serverless/
-.vercel/
-.nuxt/
-.gatsby/
-.cache/
-.output/
-.turbo/
-.vite/
-.eslintcache
-.prettiercache
-Legacy_shared/minimal/*.js
-Legacy_shared/minimal/*.js.map
-Legacy_shared/minimal/*.d.ts
-Legacy_shared/minimal/*.d.ts.map
-Legacy_shared/minimal/ui/*.js
-Legacy_shared/minimal/ui/*.js.map
-Legacy_shared/minimal/ui/*.d.ts
-Legacy_shared/minimal/ui/*.d.ts.map
+.next/
+out/
 
-############## DEPENDENCIES ##############
-node_modules/
-jspm_packages/
-.pnpm-store/
-.yarn/cache/
-.yarn/unplugged/
-.yarn/install-state.gz
-.bun.lockb
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-############## TESTING ##############
-coverage/
-.nyc_output/
-playwright-report/
-test-results/
-cypress/screenshots/
-cypress/videos/
-jest-cache/
-vitest_cache/
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-############## RUNTIME ##############
-*.log
-logs/
+# Runtime data
+pids
 *.pid
 *.seed
 *.pid.lock
-pids/
-*.tsbuildinfo
-.npm/
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
 .yarn-integrity
-.aibos-npm-cache/
-test-results-*.json
-BUILD_ANALYSIS.json
 
-############## IDEs & OS ##############
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
 
-############## MONOREPO SUPPORT ##############
-lerna-debug.log
-**/dist/
-!packages/core/dist/ # Example allowlist
-**/node_modules/
-!node_modules/ # Root-only exception
+# Next.js build output
+.next
 
-############## DOCS & TEMP ##############
-.vuepress/dist/
-docs/_site/
+# Nuxt.js build / generate output
+.nuxt
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
 tmp/
 temp/
-*.tmp
-*.temp
 
-############## CUSTOM EXCEPTIONS ##############
-!shared/.env.example
-!railway-1/backend/.env.example
-!railway-1/frontend/.env.example
-!.env.example
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-############## SEE CONTRIBUTING.md FOR POLICY ##############
-.reports/
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Manifest cache
+.manifest-cache/
+
+# AI-BOS specific
+*.log
+.env.guard.local

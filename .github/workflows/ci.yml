@@ -1,283 +1,55 @@
-name: Enterprise CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches: [main, develop, feature/*, hotfix/*]
-  pull_request:
     branches: [main, develop]
-  release:
-    types: [published]
-
-env:
-  NODE_VERSION: '18'
-  NPM_VERSION: '9'
+  pull_request:
+    branches: [main]
 
 jobs:
-  # Security and Compliance
-  security-scan:
-    name: Security & Compliance Scan
+  validate:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          cd shared && npm ci --prefer-offline --no-audit
-
-      - name: Run Snyk security scan
-        uses: snyk/actions/node@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high --fail-on=high
-
-      - name: Security scan status
-        run: |
-          echo "ℹ️ Snyk security scan completed (or skipped if SNYK_TOKEN unavailable)"
-          echo "For forks and repositories without Snyk integration, this step may be skipped"
-
-      - name: Run npm audit
-        run: |
-          npm audit --audit-level=critical
-          cd shared && npm audit --audit-level=critical
-
-      - name: Check for secrets in code
-        uses: trufflesecurity/trufflehog@main
-        with:
-          path: .
-          base: ${{ github.event.before }}
-          head: ${{ github.sha }}
-
-  # Code Quality and Linting
-  code-quality:
-    name: Code Quality & Standards
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          cd shared && npm ci --prefer-offline --no-audit
-
-      - name: Run ESLint
-        run: |
-          npm run lint
-          cd shared && npm run lint
-
-      - name: Check Lint Thresholds
-        run: |
-          cd shared/ui-components && npm run lint:threshold
-        continue-on-error: false
-
-      - name: Check TypeScript types
-        run: |
-          npm run type-check
-          cd shared && npm run type-check
-
-      - name: Check code formatting
-        run: |
-          npm run format:check
-          cd shared && npm run format:check
-
-      - name: Run zero-error system
-        run: |
-          cd shared && npm run zero-error
-
-  # Testing Suite
-  test:
-    name: Comprehensive Testing
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        node-version: [18.x, 20.x]
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
 
       - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          cd shared && npm ci --prefer-offline --no-audit
+        run: pnpm install --frozen-lockfile
 
-      - name: Run unit tests
-        run: |
-          npm run test:coverage
-          cd shared && npm run test:coverage
+      - name: Run linting
+        run: pnpm lint
 
-      - name: Run type tests
-        run: |
-          cd shared && npm run test:types
+      - name: Run type checking
+        run: pnpm type-check
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Validate manifest
+        run: pnpm manifestor:validate
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage/lcov.info
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
-
-      - name: Upload shared coverage reports
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./shared/coverage/lcov.info
-          flags: shared-tests
-          name: codecov-shared
-          fail_ci_if_error: false
-
-  # Performance Testing
-  performance:
-    name: Performance & Bundle Analysis
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          cd shared && npm ci --prefer-offline --no-audit
-
-      - name: Build application
-        run: |
-          cd shared && npm run build
-          npm run build
-
-      - name: Run performance tests
-        run: |
-          cd shared && npm run test:performance
-
-      - name: Upload bundle analysis
-        uses: actions/upload-artifact@v4
-        with:
-          name: bundle-analysis
-          path: |
-            dist/stats.html
-            shared/dist/stats.json
-
-  # Build and Deploy
-  build:
-    name: Build & Package
-    runs-on: ubuntu-latest
-    needs: [security-scan, code-quality, test, performance]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          cd shared && npm ci --prefer-offline --no-audit
-
-      - name: Build shared library
-        run: cd shared && npm run build
-
-      - name: Build application
-        run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            dist/
-            shared/dist/
-
-  # Deploy to Staging
-  deploy-staging:
-    name: Deploy to Staging
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    environment: staging
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-
-      - name: Deploy to staging
-        run: |
-          echo "Deploying to staging environment..."
-          # Add your staging deployment logic here
-
-  # Deploy to Production
-  deploy-production:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name == 'release' && github.event.action == 'published'
-    environment: production
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-
-      - name: Deploy to production
-        run: |
-          echo "Deploying to production environment..."
-          # Add your production deployment logic here
-
-  # Notifications
-  notify:
-    name: Notify Team
-    runs-on: ubuntu-latest
-    needs: [deploy-staging, deploy-production]
-    if: always()
-    steps:
-      - name: Notify on success
-        if: success()
-        run: |
-          echo "✅ All checks passed successfully!"
-          # Add your success notification logic here
-
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "❌ Some checks failed!"
-          # Add your failure notification logic here

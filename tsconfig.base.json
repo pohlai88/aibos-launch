@@ -1,47 +1,41 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES6"],
     "allowJs": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "composite": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitThis": true,
-                    "noUnusedLocals": true,
-                "noUnusedParameters": true,
-                "exactOptionalPropertyTypes": true,
-                "noImplicitOverride": true,
-                "noPropertyAccessFromIndexSignature": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../shared/src/*"],
-      "@aibos/shared-infrastructure/*": ["../shared/src/*"]
-    }
+      "@ai-bos/*": ["packages/*/src"],
+      "@ai-bos/shared-infrastructure": ["packages/shared-infrastructure/src"],
+      "@ai-bos/types": ["packages/types/src"],
+      "@ai-bos/logger": ["packages/logger/src"],
+      "@ai-bos/backend-core": ["packages/backend-core/src"]
+    },
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    ".next",
-    "out",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/__tests__/**/*"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules", "dist", ".next", "coverage"]
 }

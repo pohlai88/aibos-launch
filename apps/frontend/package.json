@@ -1,0 +1,32 @@
+{
+    "name": "@ai-bos/frontend",
+    "version": "0.1.0-foundation",
+    "description": "AI-BOS Frontend Application",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint . --ext .ts,.tsx",
+        "type-check": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf .next"
+    },
+    "dependencies": {
+        "next": "^14.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "@ai-bos/types": "workspace:*",
+        "@ai-bos/logger": "workspace:*",
+        "@ai-bos/shared-infrastructure": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^24.1.0",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "typescript": "^5.8.3",
+        "eslint": "^9.32.0",
+        "eslint-config-next": "^14.0.0",
+        "vitest": "^3.2.4"
+    }
+}

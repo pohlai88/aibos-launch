@@ -1,0 +1,33 @@
+{
+    "name": "@ai-bos/backend-core",
+    "version": "0.1.0-foundation",
+    "description": "Framework-agnostic backend business logic for AI-BOS",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "lint": "eslint src --ext .ts,.tsx",
+        "type-check": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@ai-bos/types": "workspace:*",
+        "@ai-bos/logger": "workspace:*",
+        "@ai-bos/shared-infrastructure": "workspace:*"
+    },
+    "devDependencies": {
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4"
+    },
+    "files": [
+        "dist"
+    ],
+    "keywords": [
+        "ai-bos",
+        "backend",
+        "business-logic",
+        "framework-agnostic"
+    ]
+}
